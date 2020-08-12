@@ -9,6 +9,7 @@ import {
 } from '../../actions/charActions';
 import Keypad from '../Keypad/keypad';
 import {Container} from './gameStyle';
+import {Button} from 'pcln-design-system';
 
 const GameDisplay = props => {
   const [grid, setGrid] = useState([[]]);
@@ -102,6 +103,9 @@ const GameDisplay = props => {
 
       <div>
         <Keypad setPlayer={setPlayer} player={player} grid={grid} />
+        <Button size="medium" onClick={() => props.setRender(false)}>
+          Back to Home
+        </Button>
       </div>
     </Container>
   );

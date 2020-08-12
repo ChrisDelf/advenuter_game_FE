@@ -57,7 +57,11 @@ const Display = props => {
         </>
       ) : (
         <div className="gameContainer">
-          <GameDisplay className="dungeonCon" mapid={mapId} />
+          <GameDisplay
+            className="dungeonCon"
+            mapid={mapId}
+            setRender={setRender}
+          />
         </div>
       )}
     </Container>
