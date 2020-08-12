@@ -63,7 +63,7 @@ export const getMap = userid => {
     })
       .then(res => {
         // Mixpanel.track('Register Success');
-        console.log(res);
+        // console.log(res);
         res.data.map(n => (n.grid = JSON.parse(n.grid)));
 
         dispatch({type: MAP_GET_SUCCESS, payload: res.data});
@@ -88,7 +88,7 @@ export const getPlayerLocation = mapid => {
       },
     })
       .then(res => {
-        console.log('getPlayerLocation', res);
+        //    console.log('getPlayerLocation', res);
         dispatch({type: GET_PLAYER_LOCATION_SUCCESS, payload: res.data});
       })
       .catch(err => {
@@ -98,7 +98,7 @@ export const getPlayerLocation = mapid => {
 };
 
 export const movePlayer = (player, mapid) => {
-  console.log('moving player', player);
+  //console.log('moving player', player);
   const token = localStorage.getItem('token');
   return dispatch => {
     dispatch({type: MOVE_START});
