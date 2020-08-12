@@ -5,6 +5,7 @@ import {
   movePlayer,
   getPlayerLocation,
   setRefresh,
+  getMap,
 } from '../../actions/charActions';
 import Keypad from '../Keypad/keypad';
 import {Container} from './gameStyle';
@@ -18,9 +19,10 @@ const GameDisplay = props => {
   });
   const [gridWidth, setGridWidth] = useState();
   const [gridHeight, setGridHeight] = useState();
-  // const[ refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   function selectMap() {
+    console.log('selected Map Fired off');
     if (props.maps.length !== null) {
       for (let i = 0; i < props.maps.length; i++) {
         if (props.maps[i].mapid === props.mapid) {
@@ -29,7 +31,7 @@ const GameDisplay = props => {
           setGridWidth(props.maps[i].width);
           setGridHeight(props.maps[i].height);
           props.getPlayerLocation(props.playerMapId);
-
+          console.log('select map grid');
           setPlayer({
             x: props.playerX,
             y: props.playerY,
@@ -38,11 +40,13 @@ const GameDisplay = props => {
       }
     }
   }
-
   useEffect(() => {
+    console.log('Refresh', props.refresh);
+
+    props.getMap(props.userid);
     selectMap();
-    props.setRefresh(false);
-  }, [props.refresh]);
+    console.log('useEffect in gameDisplay', grid);
+  }, [props.isLoading]);
 
   // const displayGrid = []
   //
@@ -56,13 +60,12 @@ const GameDisplay = props => {
   //   }
   //   displayGrid.push(row);
   // }
-
+  console.log('Grid.grid', grid);
   return (
     <Container className="container">
       <div>{props.mapid}</div>
       {/*  <button onClick={ () => {props.getPlayerLocation(props.playerMapId)}}>Geting player location</button>*/}
       {/*  <button onClick={ () => {props.movePlayer(player, props.playerMapId)}}>Testing player movement</button>*/}
-
       {grid.grid !== undefined && grid.grid !== null ? (
         grid.grid.map(row => (
           <div style={{height: 10}}>
@@ -96,6 +99,7 @@ const GameDisplay = props => {
       ) : (
         <div>Loading</div>
       )}
+
       <div>
         <Keypad setPlayer={setPlayer} player={player} grid={grid} />
       </div>
@@ -110,7 +114,8 @@ const mapStateToProps = state => {
     playerY: state.charReducer.playerY,
     playerMapId: state.charReducer.mapId,
     isLoading: state.charReducer.isLoading,
-    refresh: state.charReducer.refresh,
+    isSuccess: state.charReducer.isSuccess,
+    userid: state.authReducer.userid,
   };
 };
 
@@ -119,4 +124,5 @@ export default connect(mapStateToProps, {
   movePlayer,
   getPlayerLocation,
   setRefresh,
+  getMap,
 })(GameDisplay);
