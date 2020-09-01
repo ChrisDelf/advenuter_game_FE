@@ -5,6 +5,7 @@ import {
   movePlayer,
   getPlayerLocation,
   setRefresh,
+  setSuccess,
   getMap,
 } from '../../actions/charActions';
 import Keypad from '../Keypad/keypad';
@@ -23,7 +24,6 @@ const GameDisplay = props => {
   const [refresh, setRefresh] = useState(false);
 
   function selectMap() {
-    console.log('selected Map Fired off');
     if (props.maps.length !== null) {
       for (let i = 0; i < props.maps.length; i++) {
         if (props.maps[i].mapid === props.mapid) {
@@ -32,7 +32,6 @@ const GameDisplay = props => {
           setGridWidth(props.maps[i].width);
           setGridHeight(props.maps[i].height);
           props.getPlayerLocation(props.playerMapId);
-          console.log('select map grid');
           setPlayer({
             x: props.playerX,
             y: props.playerY,
@@ -42,12 +41,11 @@ const GameDisplay = props => {
     }
   }
   useEffect(() => {
-    console.log('Refresh', props.refresh);
-
+    console.log('loading', props.isSuccess);
+    props.setRefresh(false);
     props.getMap(props.userid);
     selectMap();
-    console.log('useEffect in gameDisplay', grid);
-  }, [props.isLoading]);
+  }, [props.refreshMap, props.loading]);
 
   // const displayGrid = []
   //
@@ -61,7 +59,7 @@ const GameDisplay = props => {
   //   }
   //   displayGrid.push(row);
   // }
-  console.log('Grid.grid', grid);
+
   return (
     <Container className="container">
       <div>{props.mapid}</div>
@@ -80,6 +78,9 @@ const GameDisplay = props => {
               }
               if (cell.roomType === 'Wall') {
                 color = 'black';
+              }
+              if (cell.roomType === 'Monster') {
+                color = 'red';
               }
               if (cell.x === player.x && cell.y === player.y) {
                 color = 'yellow';
@@ -117,8 +118,9 @@ const mapStateToProps = state => {
     playerX: state.charReducer.playerX,
     playerY: state.charReducer.playerY,
     playerMapId: state.charReducer.mapId,
-    isLoading: state.charReducer.isLoading,
+    loading: state.charReducer.loading,
     isSuccess: state.charReducer.isSuccess,
+    refreshMap: state.charReducer.refresh,
     userid: state.authReducer.userid,
   };
 };
@@ -129,4 +131,5 @@ export default connect(mapStateToProps, {
   getPlayerLocation,
   setRefresh,
   getMap,
+  setSuccess,
 })(GameDisplay);
