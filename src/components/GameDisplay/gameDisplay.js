@@ -13,7 +13,7 @@ import {Container} from './gameStyle';
 import {Button} from 'pcln-design-system';
 
 const GameDisplay = props => {
-  const [grid, setGrid] = useState([[]]);
+  const [grid, setGrid] = useState([[0]]);
   const [gridId, setGridId] = useState();
   const [player, setPlayer] = useState({
     x: props.playerX,
@@ -41,11 +41,11 @@ const GameDisplay = props => {
     }
   }
   useEffect(() => {
-    console.log('loading', props.isSuccess);
+    console.log('props.isSuccess', props.isSuccess);
     props.setRefresh(false);
     props.getMap(props.userid);
     selectMap();
-  }, [props.refreshMap, props.loading]);
+  }, [props.refreshMap, props.isSuccess]);
 
   // const displayGrid = []
   //

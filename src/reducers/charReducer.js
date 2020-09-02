@@ -67,7 +67,7 @@ const charReducer = (state = charState, {type, payload}) => {
         ...state,
         error: '',
         loading: false,
-        // isSuccess: true,
+        //isSuccess: true,
       };
     case MAP_GEN_FAILURE:
       return {
