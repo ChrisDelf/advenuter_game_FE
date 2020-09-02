@@ -19,12 +19,18 @@ const {
   GET_PLAYER_LOCATION_FAILURE,
   REFRESH_START,
   REFRESH_SUCCESS,
+  LOADING_START,
+  LOADING_SUCCESS,
 } = types;
 
 const Url =
   process.env.REACT_APP_URL || 'https://mudadventurebackend.herokuapp.com';
 const apiClient = process.env.REACT_APP_CLIENT || 'fdgewtek,';
 const apiSecret = process.env.REACT_APP_SECRET || 'dsfgdert';
+//const Url = 'http://localhost:9000';
+
+//const apiClient = process.env.REACT_APP_CLIENT || 'doge';
+//const apiSecret = process.env.REACT_APP_SECRET || 'doge';
 
 export const generateMap = userid => {
   const token = localStorage.getItem('token');
@@ -129,5 +135,13 @@ export const setRefresh = type => {
   return dispatch => {
     dispatch({type: REFRESH_START});
     return dispatch({type: REFRESH_SUCCESS, payload: type});
+  };
+};
+
+export const setSuccess = type => {
+  console.log('!!!!!!!!!!!!!!!!!! Success', type);
+  return dispatch => {
+    dispatch({type: LOADING_START});
+    return dispatch({type: LOADING_SUCCESS, payload: type});
   };
 };

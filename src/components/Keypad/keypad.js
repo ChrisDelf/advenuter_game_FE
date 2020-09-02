@@ -4,6 +4,7 @@ import {
   movePlayer,
   getPlayerLocation,
   setRefresh,
+  getMap,
 } from '../../actions/charActions';
 import {Button} from 'pcln-design-system';
 // import {Promise} from "bluebird";
@@ -21,10 +22,12 @@ const Keypad = props => {
   //     playery: props.y,
   // })
 
-  // useEffect(() => {
-  //     props.getPlayerLocation(props.playerMapId)
-  //
-  // }, [refresh])
+  //useEffect(() => {
+  //props.getPlayerLocation(props.playerMapId);
+  //console.log('Did we get a refresh?');
+  //props.setRefresh('false');
+  // props.getMap();
+  //}, [props.refresh]);
 
   function moveDirection(direction) {
     if (direction === 'N') {
@@ -33,7 +36,7 @@ const Keypad = props => {
       if (grid.grid[moveN.playery][moveN.playerx].roomType !== 'Wall') {
         props.movePlayer(moveN, props.playerMapId);
 
-        setRefresh(true);
+        props.setRefresh(true);
       }
     }
     if (direction === 'S') {
@@ -41,7 +44,7 @@ const Keypad = props => {
       if (grid.grid[moveS.playery][moveS.playerx].roomType !== 'Wall') {
         props.movePlayer(moveS, props.playerMapId);
 
-        setRefresh(true);
+        props.setRefresh(true);
       }
     }
     if (direction === 'W') {
@@ -49,7 +52,7 @@ const Keypad = props => {
       if (grid.grid[moveW.playery][moveW.playerx].roomType !== 'Wall') {
         props.movePlayer(moveW, props.playerMapId);
 
-        setRefresh(true);
+        props.setRefresh(true);
       }
     }
     if (direction === 'E') {
@@ -57,7 +60,7 @@ const Keypad = props => {
       if (grid.grid[moveE.playery][moveE.playerx].roomType !== 'Wall') {
         props.movePlayer(moveE, props.playerMapId);
 
-        setRefresh(true);
+        props.setRefresh(true);
       }
     }
     // console.log("player that is sent off to the server", player)
@@ -109,11 +112,12 @@ const mapStateToProps = state => {
     x: state.charReducer.playerX,
     y: state.charReducer.playerY,
     playerMapId: state.charReducer.mapId,
-    refresh1: state.charReducer.refresh,
+    refresh: state.charReducer.refresh,
   };
 };
 export default connect(mapStateToProps, {
   movePlayer,
   getPlayerLocation,
   setRefresh,
+  getMap,
 })(Keypad);

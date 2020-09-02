@@ -1,4 +1,4 @@
-import { types } from '../actions/index';
+import {types} from '../actions/index';
 
 const {
   MAP_GET_START,
@@ -15,8 +15,10 @@ const {
   GET_PLAYER_LOCATION_START,
   GET_PLAYER_LOCATION_SUCCESS,
   GET_PLAYER_LOCATION_FAILURE,
-    REFRESH_START,
-    REFRESH_SUCCESS
+  REFRESH_START,
+  REFRESH_SUCCESS,
+  LOADING_START,
+  LOADING_SUCCESS,
 } = types;
 
 const charState = {
@@ -24,129 +26,127 @@ const charState = {
   playerY: 0,
   playerMap: [{}],
   error: '',
-  isLoading: false,
+  loading: false,
   isSuccess: false,
   mapId: 0,
   refresh: false,
 };
 
-const charReducer = (state = charState, { type, payload }) => {
-
+const charReducer = (state = charState, {type, payload}) => {
   switch (type) {
-
     /// retrieving map from database
     case MAP_GET_START:
       return {
         ...state,
         error: '',
-        isLoading: true
+        loading: true,
       };
     case MAP_GET_SUCCESS:
       return {
         ...state,
         error: '',
-        isLoading: false,
+        loading: false,
         playerMap: payload,
-        isSuccess: true
+        isSuccess: true,
       };
     case MAP_GET_FAILURE:
       return {
         ...state,
-        isLoading: false,
-        error: payload
+        loading: false,
+        error: payload,
       };
-      //----- generation of map
+    //----- generation of map
     case MAP_GEN_START:
       return {
         ...state,
         error: '',
-        isLoading: true
+        loading: true,
       };
     case MAP_GEN_SUCCESS:
       return {
         ...state,
         error: '',
-        isLoading: false,
-        isSuccess: true
+        loading: false,
+        //isSuccess: true,
       };
     case MAP_GEN_FAILURE:
       return {
         ...state,
-        isLoading: false,
-        error: payload
+        loading: false,
+        error: payload,
       };
-      ////------- Saving mapid
+    ////------- Saving mapid
     case SET_MAPID_START:
-      return{
+      return {
         ...state,
-        isLoading: true,
-
+        loading: true,
       };
     case SET_MAPID_SUCCESS:
-      return{
+      return {
         ...state,
         mapId: payload,
-        isLoading: false
+        loading: false,
       };
 
     ///---------------player movement
     case MOVE_START:
       return {
         ...state,
-        isLoading: true,
-      }
+        loading: true,
+      };
     case MOVE_SUCCESS:
-      console.log("move success", payload)
-      return{
+      console.log('move success', payload);
+      return {
         ...state,
         playerX: payload.playerx,
         playerY: payload.playery,
         refresh: true,
-        isLoading: false,
-      }
+        loading: false,
+      };
     case MOVE_FAILURE:
-      return{
+      return {
         ...state,
-        isLoading: false,
-        error: payload
-      }
+        loading: false,
+        error: payload,
+      };
 
-      ///---- getting the player location from the backend
+    ///---- getting the player location from the backend
 
     case GET_PLAYER_LOCATION_START:
-      return{
+      return {
         ...state,
-        isLoading: true,
-      }
+        loading: true,
+      };
 
     case GET_PLAYER_LOCATION_SUCCESS:
-      console.log("setting player location", payload)
-      return{
+      console.log('setting player location', payload);
+      return {
         ...state,
         playerX: payload.playerx,
         playerY: payload.playery,
-        isloading:false
-      }
+        isloading: false,
+      };
 
     case GET_PLAYER_LOCATION_FAILURE:
-      return{
+      return {
         ...state,
-        isLoading: false,
-        error: payload
-      }
+        loading: false,
+        error: payload,
+      };
     case REFRESH_START:
-      return{
+      return {
         ...state,
-        isLoading: true,
-
-      }
+        loading: true,
+      };
     case REFRESH_SUCCESS:
-      return{
+      return {
         ...state,
         refresh: payload,
-
-      }
-
+      };
+    case LOADING_START:
+      return {...state};
+    case LOADING_SUCCESS:
+      return {...state, isSuccess: payload};
     default:
       return state;
   }

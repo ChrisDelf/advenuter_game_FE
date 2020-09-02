@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {generateMap, getMap} from '../../actions/charActions';
+import {setSuccess, generateMap, getMap} from '../../actions/charActions';
 import {getUserInfo} from '../../actions/authActions';
 import axios from 'axios';
 import {Button} from 'pcln-design-system';
@@ -8,7 +8,6 @@ import {Container} from './displayStyle';
 import GameDisplay from '../GameDisplay/gameDisplay';
 
 const Display = props => {
-  console.log('props', props);
   const [render, setRender] = useState(false);
   const [mapId, setMapId] = useState();
   const [refresh, setRefresh] = useState(false);
@@ -19,7 +18,6 @@ const Display = props => {
     props.getUserInfo(props.username);
     props.getMap(props.userid);
     setRefresh(false);
-    console.log(refresh, 'refresh');
   }, [refresh]);
 
   return (
@@ -49,6 +47,7 @@ const Display = props => {
                 onClick={function loadMap() {
                   setRender(true);
                   setMapId(n.mapid);
+                  props.setSuccess(false);
                 }}>
                 {n.mapid}
               </Button>
@@ -57,7 +56,11 @@ const Display = props => {
         </>
       ) : (
         <div className="gameContainer">
-          <GameDisplay className="dungeonCon" mapid={mapId} />
+          <GameDisplay
+            className="dungeonCon"
+            mapid={mapId}
+            setRender={setRender}
+          />
         </div>
       )}
     </Container>
@@ -68,9 +71,13 @@ const mapStateToProps = state => {
     maps: state.charReducer.playerMap,
     username: state.authReducer.user,
     userid: state.authReducer.userid,
+    success: state.charReducer.isSuccess,
   };
 };
 
-export default connect(mapStateToProps, {generateMap, getMap, getUserInfo})(
-  Display,
-);
+export default connect(mapStateToProps, {
+  setSuccess,
+  generateMap,
+  getMap,
+  getUserInfo,
+})(Display);
